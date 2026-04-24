@@ -2,6 +2,7 @@ backend:
   name: github-app
   repo: huiiz/blog-cms
   appId: 3491617
+  filterFunctions: []
 
 # Media storage
 media_folder: "public/uploads"
