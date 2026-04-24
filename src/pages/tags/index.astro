@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Get all tags
+const tagCounts = posts.reduce((acc, post) => {
+  post.data.tags?.forEach((tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+  });
+  return acc;
+}, {} as Record<string, number>);
+
+const tags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="标签" description="文章标签">
+  <h1 class="text-3xl font-bold mb-8">标签云</h1>
+
+  <div class="flex flex-wrap gap-3">
+    {tags.map(([tag, count]) => (
+      <a
+        href={`/tags/${encodeURIComponent(tag)}`}
+        class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors group"
+      >
+        <span class="group-hover:text-primary-600 transition-colors">#{tag}</span>
+        <span class="text-gray-400 text-sm ml-1">({count})</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

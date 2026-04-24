@@ -1,0 +1,129 @@
+---
+
+---
+
+<button
+  id="search-btn"
+  class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+  aria-label="搜索"
+>
+  <svg
+    class="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+</button>
+
+<div
+  id="search-modal"
+  class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4"
+>
+  <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-xl max-h-[80vh] overflow-hidden">
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center gap-3">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="search-input"
+          class="flex-1 bg-transparent border-none outline-none text-lg"
+          placeholder="搜索文章..."
+        />
+        <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded">ESC</kbd>
+      </div>
+    </div>
+    <div id="search-results" class="p-4 overflow-y-auto max-h-[60vh]">
+      <p class="text-gray-500 text-center">输入关键词开始搜索...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('search-modal');
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const results = document.getElementById('search-results');
+
+  document.getElementById('search-btn')?.addEventListener('click', () => {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    input?.focus();
+  });
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
+    }
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
+      input?.focus();
+    }
+  });
+
+  // Pagefind search - only available after build
+  let pagefind: any = null;
+
+  async function loadPagefind() {
+    if (pagefind) return pagefind;
+    try {
+      // @ts-ignore - Dynamic import to avoid Vite static analysis
+      const pfModule = await new Function('return import("/pagefind/pagefind.js")')();
+      const pf = pfModule.default || pfModule;
+      await pf.init();
+      pagefind = pf;
+      return pf;
+    } catch (e) {
+      // Pagefind not available in dev mode
+      return null;
+    }
+  }
+
+  async function doSearch(query: string) {
+    if (!query.trim()) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center">输入关键词开始搜索...</p>';
+      return;
+    }
+
+    const pf = await loadPagefind();
+    if (!pf) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center">搜索功能在构建后可用。请运行 npm run build。</p>';
+      return;
+    }
+
+    const searchResults = await pf.search(query);
+    const data = await Promise.all(searchResults.results.slice(0, 10).map((r: any) => r.data()));
+
+    if (data.length === 0) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center">没有找到相关文章</p>';
+      return;
+    }
+
+    if (results) {
+      results.innerHTML = data.map((r: any) => `
+        <a href="${r.url}" class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <h3 class="font-semibold mb-1">${r.meta?.title || '无标题'}</h3>
+          <p class="text-sm text-gray-500 line-clamp-2">${r.excerpt}</p>
+        </a>
+      `).join('');
+    }
+  }
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  input?.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => doSearch(input.value), 300);
+  });
+</script>

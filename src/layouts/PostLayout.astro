@@ -1,0 +1,84 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PostMeta from '@/components/PostMeta.astro';
+import Giscus from '@/components/Giscus.astro';
+import TOC from '@/components/TOC.astro';
+import { getCollection } from 'astro:content';
+
+const { post, headings } = Astro.props;
+
+// Get related posts
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.data.category === post.data.category && p.id !== post.id)
+  .slice(0, 3);
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt} ogImage={post.data.cover}>
+  <article class="animate-fade-in">
+    {/* Post Header */}
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4 leading-tight">{post.data.title}</h1>
+      <PostMeta post={post} />
+    </header>
+
+    {/* Cover Image */}
+    {post.data.cover && (
+      <div class="mb-8 rounded-lg overflow-hidden">
+        <img src={post.data.cover} alt={post.data.title} class="w-full h-auto" />
+      </div>
+    )}
+
+    <div class="flex gap-8">
+      {/* Main Content */}
+      <div class="flex-1 min-w-0">
+        {/* MDX Content */}
+        <div class="prose prose-lg dark:prose-invert max-w-none">
+          <slot />
+        </div>
+
+        {/* Tags */}
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="mt-8 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <a
+                href={`/tags/${encodeURIComponent(tag)}`}
+                class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )}
+
+        {/* Giscus Comments */}
+        <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <h2 class="text-2xl font-bold mb-4">评论区</h2>
+          <Giscus />
+        </div>
+      </div>
+
+      {/* TOC Sidebar */}
+      <aside class="hidden xl:block w-64 shrink-0">
+        <div class="sticky top-8">
+          <TOC headings={headings} />
+        </div>
+      </aside>
+    </div>
+
+    {/* Related Posts */}
+    {relatedPosts.length > 0 && (
+      <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+        <h2 class="text-2xl font-bold mb-6">相关文章</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          {relatedPosts.map((p) => (
+            <a href={`/posts/${p.id}`} class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-colors">
+              <h3 class="font-semibold mb-2 line-clamp-2">{p.data.title}</h3>
+              <p class="text-sm text-gray-500">{p.data.date.toISOString().slice(0, 10)}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </article>
+</BaseLayout>

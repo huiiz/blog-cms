@@ -1,0 +1,92 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="搜索" description="搜索文章">
+  <h1 class="text-3xl font-bold mb-8">搜索</h1>
+
+  <div class="max-w-2xl mx-auto">
+    <div class="relative">
+      <input
+        type="text"
+        id="search-input"
+        class="w-full px-4 py-3 pl-12 text-lg border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none"
+        placeholder="输入关键词搜索..."
+      />
+      <svg
+        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+
+    <div id="search-results" class="mt-8">
+      <p class="text-gray-500 text-center py-8">输入关键词开始搜索...</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const results = document.getElementById('search-results');
+  let pagefind: any = null;
+
+  async function loadPagefind() {
+    if (pagefind) return pagefind;
+    try {
+      // @ts-ignore - Dynamic import to avoid Vite static analysis
+      const pfModule = await new Function('return import("/pagefind/pagefind.js")')();
+      const pf = pfModule.default || pfModule;
+      await pf.init();
+      pagefind = pf;
+      return pf;
+    } catch (e) {
+      // Pagefind not available in dev mode
+      return null;
+    }
+  }
+
+  async function doSearch(query: string) {
+    if (!query.trim()) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center py-8">输入关键词开始搜索...</p>';
+      return;
+    }
+
+    const pf = await loadPagefind();
+    if (!pf) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center py-8">搜索功能在构建后可用。请运行 npm run build。</p>';
+      return;
+    }
+
+    const searchResults = await pf.search(query);
+    const data = await Promise.all(searchResults.results.slice(0, 20).map((r: any) => r.data()));
+
+    if (data.length === 0) {
+      if (results) results.innerHTML = '<p class="text-gray-500 text-center py-8">没有找到相关文章</p>';
+      return;
+    }
+
+    if (results) {
+      results.innerHTML = `
+        <p class="text-gray-500 mb-4">找到 ${searchResults.results.length} 个结果</p>
+        <div class="space-y-4">
+          ${data.map((r: any) => `
+            <a href="${r.url}" class="block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-primary-500 transition-colors">
+              <h3 class="text-lg font-bold mb-2 hover:text-primary-600">${r.meta?.title || '无标题'}</h3>
+              <p class="text-gray-600 dark:text-gray-400">${r.excerpt}</p>
+            </a>
+          `).join('')}
+        </div>
+      `;
+    }
+  }
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  input?.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => doSearch(input.value), 300);
+  });
+</script>

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "WebSearch",
+      "Bash(npm view *)",
+      "Bash(npm run *)",
+      "Bash(sed -i 's/\\\\.slug}/.id}/g' src/pages/*.astro src/pages/**/*.astro src/pages/*.ts)",
+      "Bash(sed -i 's/post\\\\.slug/post.id.replace\\(\".mdx\", \"\"\\)/g' src/pages/*.astro src/pages/**/*.astro src/pages/*.ts)",
+      "Bash(skillhub install *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4323/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/)",
+      "Bash(npx playwright *)",
+      "Bash(node debug.cjs)",
+      "Bash(rm -f debug.cjs)",
+      "Bash(node debug.mjs)",
+      "Bash(curl -s \"http://localhost:4321/src/components/SearchButton.astro?astro&type=script&index=0&lang.ts\")",
+      "Bash(pkill -f \"astro dev\")",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

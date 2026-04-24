@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostMeta from '@/components/PostMeta.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const categories = [...new Set(allPosts.map((p) => p.data.category).filter(Boolean))];
+
+  return categories.map((category) => ({
+    params: { name: category },
+    props: {
+      category,
+      posts: allPosts
+        .filter((p) => p.data.category === category)
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout title={`分类: ${category}`} description={`${category}分类下的文章`}>
+  <div class="mb-8">
+    <a href="/categories" class="text-primary-600 hover:underline mb-4 inline-block">&larr; 返回分类</a>
+    <h1 class="text-3xl font-bold">{category}</h1>
+    <p class="text-gray-500 mt-2">共 {posts.length} 篇文章</p>
+  </div>
+
+  <div class="space-y-4">
+    {posts.map((post) => (
+      <a
+        href={`/posts/${post.id}`}
+        class="group block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-primary-500 transition-colors"
+      >
+        <h2 class="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">
+          {post.data.title}
+        </h2>
+        {post.data.excerpt && (
+          <p class="text-gray-600 dark:text-gray-400 mb-3">{post.data.excerpt}</p>
+        )}
+        <PostMeta post={post} />
+      </a>
+    ))}
+  </div>
+</BaseLayout>

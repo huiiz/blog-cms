@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "playwright": {
+      "name": "Playwright (Automation + MCP + Scraper)",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=playwright",
+      "source": "skillhub",
+      "version": "1.0.3"
+    }
+  }
+}

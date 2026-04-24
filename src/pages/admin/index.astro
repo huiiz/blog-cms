@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="管理后台" description="博客管理后台">
+  <div class="max-w-4xl mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-8">博客管理后台</h1>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">快速操作</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <a
+          href="https://github.com/new"
+          target="_blank"
+          rel="noopener"
+          class="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+        >
+          <h3 class="font-semibold mb-2">新建文章</h3>
+          <p class="text-sm text-gray-500">在 GitHub 上创建新的 MDX 文章</p>
+        </a>
+        <a
+          href="/"
+          class="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+        >
+          <h3 class="font-semibold mb-2">查看博客</h3>
+          <p class="text-sm text-gray-500">访问博客首页</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">使用说明</h2>
+      <ol class="list-decimal list-inside space-y-3 text-gray-600 dark:text-gray-400">
+        <li>在 GitHub 仓库中创建或编辑 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">src/content/blog/*.mdx</code> 文件</li>
+        <li>文件会自动同步到博客</li>
+        <li>文章会自动生成分类和标签页面</li>
+        <li>评论系统使用 Giscus，需要配置 GitHub Discussions</li>
+      </ol>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <h2 class="text-xl font-semibold mb-4">文章格式</h2>
+      <pre class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg overflow-x-auto text-sm"><code>---
+title: 文章标题
+slug: article-slug
+date: 2026-04-24
+category: 分类
+tags: [标签1, 标签2]
+excerpt: 文章摘要
+draft: false
+---
+
+文章内容...</code></pre>
+    </div>
+
+    <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <h3 class="font-medium mb-2">相关链接</h3>
+      <div class="space-y-2 text-sm">
+        <a href="https://astro.build" target="_blank" rel="noopener" class="block text-primary-600 hover:underline">Astro 文档</a>
+        <a href="https://tina.io" target="_blank" rel="noopener" class="block text-primary-600 hover:underline">TinaCMS 文档</a>
+        <a href="https://cloudflare.com" target="_blank" rel="noopener" class="block text-primary-600 hover:underline">Cloudflare</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,77 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostMeta from '@/components/PostMeta.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Sort: pinned first, then by date
+const posts = allPosts.sort((a, b) => {
+  if (a.data.pinned && !b.data.pinned) return -1;
+  if (!a.data.pinned && b.data.pinned) return 1;
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+
+const pinnedPosts = posts.filter((p) => p.data.pinned);
+const regularPosts = posts.filter((p) => !p.data.pinned);
+---
+
+<BaseLayout title="首页" description="个人技术博客">
+  {/* Hero Section */}
+  <section class="text-center py-12 mb-12">
+    <h1 class="text-4xl font-bold mb-4">欢迎来到我的博客</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+      分享技术心得、生活感悟，记录成长的点点滴滴
+    </p>
+  </section>
+
+  {/* Pinned Posts */}
+  {pinnedPosts.length > 0 && (
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5v6l1 1 1-1v-6h5v-2l-2-2z"/>
+        </svg>
+        置顶文章
+      </h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        {pinnedPosts.map((post) => (
+          <a href={`/posts/${post.id}`} class="group block p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30 rounded-xl hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">
+              {post.data.title}
+            </h3>
+            {post.data.excerpt && (
+              <p class="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                {post.data.excerpt}
+              </p>
+            )}
+            <PostMeta post={post} />
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* All Posts */}
+  <section>
+    <h2 class="text-2xl font-bold mb-6">最新文章</h2>
+    <div class="space-y-4">
+      {regularPosts.map((post) => (
+        <a
+          href={`/posts/${post.id}`}
+          class="group block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
+        >
+          <h3 class="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">
+            {post.data.title}
+          </h3>
+          {post.data.excerpt && (
+            <p class="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+              {post.data.excerpt}
+            </p>
+          )}
+          <PostMeta post={post} />
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

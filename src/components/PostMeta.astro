@@ -1,0 +1,26 @@
+---
+const { post } = Astro.props;
+
+const formattedDate = post.data.date.toISOString().slice(0, 10);
+---
+
+<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+  <time datetime={formattedDate}>
+    {formattedDate}
+  </time>
+
+  {post.data.category && (
+    <a
+      href={`/categories/${post.data.category}`}
+      class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs"
+    >
+      {post.data.category}
+    </a>
+  )}
+
+  {post.data.updated && (
+    <span class="text-gray-400">
+      更新于 {post.data.updated}
+    </span>
+  )}
+</div>
