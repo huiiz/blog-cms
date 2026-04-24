@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: your-username/your-repo
+  repo: huiiz/blog-cms
   branch: main
   commit_messages:
     create: 'Create {{slug}}'
