@@ -11,9 +11,9 @@ public_folder: "/uploads"
 publish_mode: editorial_workflow
 
 # Site URL
-site_url: https://blog.huii.top
-display_url: https://blog.huii.top
-logo_url: https://blog.huii.top/favicon.svg
+site_url: https://hhuii-blog.github.io
+display_url: https://hhuii-blog.github.io
+logo_url: https://hhuii-blog.github.io/favicon.svg
 
 # Collections
 collections:
