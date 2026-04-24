@@ -11,9 +11,9 @@ public_folder: "/uploads"
 publish_mode: editorial_workflow
 
 # Site URL
-site_url: https://huiiz.github.io/blog-cms
-display_url: https://huiiz.github.io/blog-cms
-logo_url: https://huiiz.github.io/blog-cms/favicon.svg
+site_url: https://blog.huii.top
+display_url: https://blog.huii.top
+logo_url: https://blog.huii.top/favicon.svg
 
 # Collections
 collections:
