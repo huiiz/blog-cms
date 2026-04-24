@@ -1,8 +1,15 @@
 backend:
-  name: github-app
+  name: github
   repo: huiiz/blog-cms
-  appId: 3491617
-  filterFunctions: []
+  branch: main
+  client_id: Ov23litZG8u9MyJrJxm6
+  client_secret: ab8acb90c2ce3ae51eaee915693de6c58925aeff
+  commit_messages:
+    create: 'Create {{slug}}'
+    update: 'Update {{slug}}'
+    delete: 'Delete {{slug}}'
+    uploadMedia: 'Upload {{path}}'
+    deleteMedia: 'Delete {{path}}'
 
 # Media storage
 media_folder: "public/uploads"
