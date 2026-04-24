@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://hhuii-blog.github.io',
+  site: 'https://huii-blog.huii.top',
   integrations: [
     mdx(),
     tailwind(),
