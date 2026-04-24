@@ -7,70 +7,20 @@
   <title>内容管理后台</title>
   <style>
     body { margin: 0; }
+    .cms-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
+      color: #666;
+    }
   </style>
-  <script>
-    window.CMS_MANUAL_INIT = true;
-    window.CMS_CONFIG = {
-      backend: {
-        name: "github",
-        repo: "huiiz/blog-cms",
-        branch: "main",
-        client_id: "Ov23litZG8u9MyJrJxm6",
-        client_secret: "ab8acb90c2ce3ae51eaee915693de6c58925aeff"
-      },
-      media_folder: "public/uploads",
-      public_folder: "/uploads",
-      publish_mode: "editorial_workflow",
-      site_url: "https://huii-blog.huii.top",
-      display_url: "https://huii-blog.huii.top",
-      collections: [
-        {
-          name: "blog",
-          label: "文章",
-          label_singular: "文章",
-          folder: "src/content/blog",
-          create: true,
-          slug: "{{slug}}",
-          fields: [
-            { label: "标题", name: "title", widget: "string" },
-            { label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false },
-            { label: "作者", name: "author", widget: "string", required: false },
-            { label: "摘要", name: "excerpt", widget: "text", required: false },
-            { label: "封面图", name: "cover", widget: "image", required: false },
-            { label: "分类", name: "category", widget: "select", options: ["技术", "教程", "生活", "随笔", "其他"], required: false },
-            { label: "标签", name: "tags", widget: "list", required: false },
-            { label: "草稿", name: "draft", widget: "boolean", default: false },
-            { label: "置顶", name: "pinned", widget: "boolean", default: false },
-            { label: "内容", name: "body", widget: "markdown" }
-          ]
-        },
-        {
-          name: "pages",
-          label: "页面",
-          label_singular: "页面",
-          folder: "src/content/pages",
-          create: true,
-          slug: "{{slug}}",
-          fields: [
-            { label: "标题", name: "title", widget: "string" },
-            { label: "内容", name: "body", widget: "markdown" }
-          ]
-        }
-      ]
-    };
-  </script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.CMS) {
-        window.CMS.init(window.CMS_CONFIG);
-      } else {
-        console.error('Decap CMS not loaded');
-      }
-    });
-  </script>
 </head>
 <body>
-  <div id="nc-root"></div>
+  <div id="nc-root">
+    <div class="cms-loading">加载中...</div>
+  </div>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
