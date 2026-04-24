@@ -21,7 +21,9 @@
       "Bash(git init *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(/c/Users/huii/AppData/Local/Programs/GitHub/gh.exe api *)",
+      "Bash(\"/c/Users/huii/AppData/Local/Programs/GitHub/gh.exe\" api *)"
     ]
   }
 }
