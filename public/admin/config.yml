@@ -1,0 +1,74 @@
+backend:
+  name: github
+  repo: your-username/your-repo
+  branch: main
+  commit_messages:
+    create: 'Create {{slug}}'
+    update: 'Update {{slug}}'
+    delete: 'Delete {{slug}}'
+    uploadMedia: 'Upload {{path}}'
+    deleteMedia: 'Delete {{path}}'
+
+# Media storage
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+# Editorial workflow
+publish_mode: editorial_workflow
+
+# Site URL
+site_url: https://your-blog.pages.dev
+display_url: https://your-blog.pages.dev
+logo_url: https://your-blog.pages.dev/favicon.svg
+
+# Collections
+collections:
+  - name: "blog"
+    label: "文章"
+    label_singular: "文章"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "posts/{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "更新时间", name: "updated", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "作者", name: "author", widget: "string", required: false }
+      - { label: "摘要", name: "excerpt", widget: "text", required: false }
+      - { label: "封面图", name: "cover", widget: "image", required: false }
+      - label: "分类"
+        name: "category"
+        widget: "select"
+        options: ["技术", "教程", "生活", "随笔", "其他"]
+        required: false
+      - { label: "标签", name: "tags", widget: "list", required: false }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false }
+      - { label: "置顶", name: "pinned", widget: "boolean", default: false }
+      - { label: "内容", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "页面"
+    label_singular: "页面"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "内容", name: "body", widget: "markdown" }
+
+  - name: "settings"
+    label: "设置"
+    files:
+      - name: "general"
+        label: "网站设置"
+        file: "src/content/settings/general.json"
+        fields:
+          - { label: "网站名称", name: "siteName", widget: "string" }
+          - { label: "网站描述", name: "description", widget: "text" }
+          - { label: "作者名称", name: "author", widget: "string" }
+          - { label: "社交链接", name: "social", widget: "object", fields: [
+              { label: "GitHub", name: "github", widget: "string", required: false },
+              { label: "Twitter", name: "twitter", widget: "string", required: false },
+              { label: "邮箱", name: "email", widget: "string", required: false }
+            ]}

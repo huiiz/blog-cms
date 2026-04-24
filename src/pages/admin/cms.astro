@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="内容管理" description="Decap CMS 内容管理后台">
+  <div class="max-w-4xl mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-4">内容管理</h1>
+
+    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-8">
+      <div class="flex gap-3">
+        <svg class="w-6 h-6 text-yellow-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+          <h2 class="font-semibold text-yellow-800 dark:text-yellow-200">需要配置 GitHub</h2>
+          <p class="text-yellow-700 dark:text-yellow-300 text-sm mt-1">
+            Decap CMS 需要 GitHub OAuth 才能使用。请先配置 GitHub 仓库信息。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">配置步骤</h2>
+
+      <div class="space-y-4">
+        <div class="flex gap-4">
+          <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold shrink-0">1</div>
+          <div>
+            <h3 class="font-semibold">修改 CMS 配置</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">编辑 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">public/admin/config.yml</code> 文件</p>
+            <pre class="mt-2 bg-gray-50 dark:bg-gray-900 p-3 rounded-lg text-sm overflow-x-auto"><code>backend:
+  name: github
+  repo: your-username/your-repo   # 修改为你的 GitHub 用户名/仓库名
+  branch: main                    # 如果使用其他分支，修改这里</code></pre>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold shrink-0">2</div>
+          <div>
+            <h3 class="font-semibold">部署到 GitHub Pages</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+              将代码推送到 GitHub 仓库后，在仓库设置中启用 GitHub Pages。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold shrink-0">3</div>
+          <div>
+            <h3 class="font-semibold">访问 CMS</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+              配置完成后，访问 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">/admin/</code> 使用 GitHub 登录。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+      <h2 class="text-xl font-bold mb-4">当前配置</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        请编辑 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">public/admin/config.yml</code> 中的 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">repo</code> 字段，
+        将 <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">your-username/your-repo</code> 替换为你的 GitHub 用户名和仓库名。
+      </p>
+      <div class="flex gap-4">
+        <a
+          href="https://github.com/new"
+          target="_blank"
+          rel="noopener"
+          class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          创建 GitHub 仓库
+        </a>
+        <a
+          href="/admin/"
+          class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+        >
+          预览 CMS（需配置后使用）
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+      <h3 class="font-semibold mb-2">使用流程</h3>
+      <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 text-sm">
+        <li>在 CMS 中创建或编辑文章</li>
+        <li>保存后会自动创建 GitHub Pull Request</li>
+        <li>审核并合并 PR</li>
+        <li>网站自动构建并发布更新</li>
+      </ol>
+    </div>
+  </div>
+</BaseLayout>
